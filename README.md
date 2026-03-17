@@ -1,142 +1,48 @@
-# EduTest AI — Monorepo
+# EduTest AI 🧠
 
-> **EduTest AI** es una plataforma inteligente de evaluación que utiliza IA generativa para crear, administrar y evaluar exámenes educativos.
+Este es mi proyecto final de gestion de conocimiento. La idea surgió de un problema real que tenemos todos: los PDFs de estudio son interminables y aburridísimos de repasar antes de un examen.
 
----
+## ¿De qué trata?
 
-## 📂 Estructura del Proyecto
+Básicamente es una app donde subes un documento (un PDF de apuntes, un capítulo de libro, lo que sea) y la IA te genera un cuestionario automáticamente a partir de ese contenido. .
 
-```
-edutest-ai/
-├── frontend/          # SPA con React + Vite + Tailwind CSS
-│   ├── src/
-│   │   ├── index.css  # Directivas de Tailwind
-│   │   └── App.jsx
-│   ├── tailwind.config.js
-│   ├── postcss.config.js
-│   └── vite.config.js
-│
-└── backend/           # API REST con FastAPI
-    ├── app/
-    │   ├── main.py            # Punto de entrada de la aplicación
-    │   ├── api/               # Capa HTTP (routers)
-    │   │   └── v1/
-    │   │       └── endpoints/ # auth.py · users.py · exams.py
-    │   ├── services/          # Lógica de negocio
-    │   │   ├── user_service.py
-    │   │   └── exam_service.py
-    │   ├── schemas/           # Modelos Pydantic de petición/respuesta
-    │   │   ├── user.py
-    │   │   └── exam.py
-    │   ├── models/            # Modelos ORM de SQLAlchemy
-    │   │   ├── user.py
-    │   │   └── exam.py
-    │   └── core/              # Configuración y utilidades de seguridad
-    │       ├── config.py
-    │       └── security.py
-    ├── requirements.txt
-    └── .env.example
-```
+La parte de IA la maneja **Gemini 1.5 Flash** (API de Google). El resto es un stack bastante estándar.
 
----
+## Tecnologías utilizadas
 
-## 🚀 Primeros Pasos
+- **React + Vite** — el frontend, lo que ve el usuario
+- **FastAPI (Python)** — el backend, donde vive la lógica y la conexión con la IA
+- **Supabase** — base de datos (PostgreSQL) y autenticación, todo en uno
 
-### Requisitos Previos
+## Cómo correrlo en local
 
-| Herramienta | Versión |
-|-------------|---------|
-| Node.js | ≥ 18 |
-| Python | ≥ 3.11 |
-| pip | última versión |
-
----
-
-### 1 · Frontend (React + Vite + Tailwind CSS)
-
+**Frontend:**
 ```bash
 cd frontend
-
-# Instalar dependencias
 npm install
-
-# Iniciar el servidor de desarrollo (http://localhost:5173)
 npm run dev
+# Abre http://localhost:5173
 ```
 
-Para compilar en producción:
-
-```bash
-npm run build
-```
-
----
-
-### 2 · Backend (FastAPI)
-
+**Backend:**
 ```bash
 cd backend
-
-# Crear y activar un entorno virtual
 python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# macOS / Linux
-source .venv/bin/activate
-
-# Instalar dependencias de Python
+.venv\Scripts\activate       # Windows
 pip install -r requirements.txt
-
-# Configurar variables de entorno
-copy .env.example .env   # Windows
-
-# Iniciar el servidor de desarrollo (http://localhost:8000)
+# Crea un .env con tus claves de Supabase (ver .env.example)
 uvicorn app.main:app --reload
+# Abre http://localhost:8000/docs para ver la API
 ```
 
-La documentación interactiva de la API está disponible en:
-
-- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
-
----
-
-## 🏗️ Arquitectura
+## Estructura del proyecto
 
 ```
-Navegador → React SPA (Vite, puerto 5173)
-               │
-               │ HTTP / REST (JSON)
-               ▼
-         Aplicación FastAPI (Uvicorn, puerto 8000)
-               │
-     ┌─────────┴──────────┐
-     │  Routers (/api/v1) │
-     └─────────┬──────────┘
-               │
-     ┌─────────┴──────────┐
-     │      Servicios      │  ← lógica de negocio, llamadas a IA
-     └─────────┬──────────┘
-               │
-     ┌─────────┴──────────┐
-     │  Modelos SQLAlchemy │  ← acceso a base de datos
-     └────────────────────┘
+EduTest_AI/
+├── frontend/    # React + Vite + Tailwind
+└── backend/     # FastAPI en capas (api, services, schemas, models, core)
 ```
 
----
+## Estado actual
 
-## 🛣️ Hoja de Ruta
-
-- [ ] Implementar el flujo de autenticación con JWT
-- [ ] Conectar a una base de datos relacional (PostgreSQL recomendado para producción)
-- [ ] Integrar un proveedor de IA (p. ej. Google Gemini) para la generación de preguntas
-- [ ] Añadir migraciones de base de datos con Alembic
-- [ ] Dockerizar ambos servicios con `docker-compose`
-
----
-
-## 📄 Licencia
-
-MIT © Contribuidores de EduTest AI
+El login ya funciona. El siguiente paso es la subida de PDFs y la generación de cuestionarios con IA — la parte más interesante del proyecto.
