@@ -1,0 +1,22 @@
+# =========================
+# IGNORAR VARIABLES DE ENTORNO (¡CRÍTICO!)
+# =========================
+.env
+.env.*
+backend/.env
+frontend/.env.local
+
+# =========================
+# IGNORAR DEPENDENCIAS Y ENTORNOS
+# =========================
+backend/.venv/
+backend/venv/
+frontend/node_modules/
+node_modules/
+__pycache__/
+
+# =========================
+# IGNORAR ARCHIVOS DEL SISTEMA
+# =========================
+.DS_Store
+Thumbs.db

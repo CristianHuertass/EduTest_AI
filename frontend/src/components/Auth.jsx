@@ -20,9 +20,9 @@ export default function Auth({ onLogin }) {
     const { error } = await supabase.auth.signUp({ email, password })
 
     if (error) {
-      alert(`❌ Error al registrarse: ${error.message}`)
+      alert(` Error al registrarse: ${error.message}`)
     } else {
-      alert('📧 Revisa tu correo para confirmar tu cuenta.')
+      alert(' Revisa tu correo para confirmar tu cuenta.')
     }
 
     setLoading(false)
@@ -36,10 +36,10 @@ export default function Auth({ onLogin }) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
-      alert(`❌ Error al iniciar sesión: ${error.message}`)
+      alert(` Error al iniciar sesión: ${error.message}`)
       setLoading(false)
     } else {
-      alert(`¡Bienvenido! 👋`)
+      alert(`¡Bienvenido! `)
       onLogin(data.user) // Notifica a App.jsx para navegar al dashboard
     }
   }

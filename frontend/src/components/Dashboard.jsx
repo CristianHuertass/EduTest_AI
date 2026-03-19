@@ -10,7 +10,7 @@ export default function Dashboard({ user, onLogout }) {
     <div className="dashboard-screen">
       <header className="dashboard-header">
         <div className="dashboard-logo">
-          Edu<span>Test</span> AI 🧠
+          Edu<span>Test</span> AI
         </div>
         <div className="dashboard-user">
           <span>{user?.email}</span>
@@ -22,7 +22,7 @@ export default function Dashboard({ user, onLogout }) {
 
       <main className="dashboard-main">
         <div className="dashboard-welcome">
-          <h1>¡Bienvenido de vuelta! 👋</h1>
+          <h1>¡Bienvenido de vuelta! </h1>
           <p>Estás en tu panel de control. Aquí podrás subir tus materiales de estudio y generar evaluaciones inteligentes.</p>
         </div>
 
