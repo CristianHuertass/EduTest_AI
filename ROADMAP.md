@@ -9,7 +9,7 @@
 **Fase 1 y 2 — Configurar todo el backend y la base de datos**
 - Monorepo inicializado con `/frontend` y `/backend`
 - Entorno virtual Python creado, dependencias instaladas
-- Tablas creadas en Supabase: `profiles`, `study_materials`, `quizzes`, `questions`
+- Tablas creadas en Supabase: `profiles`, `study_materials`, `quizzes`, `questions`,`quiz_attempts`
 - RLS configurado en Supabase
 - Cliente de Supabase conectado al backend (`database.py`)
 - Endpoint `/api/test-db` respondiendo 200 OK ✔

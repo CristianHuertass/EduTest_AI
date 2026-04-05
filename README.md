@@ -1,6 +1,6 @@
-# EduTest AI 🧠
+# EduTest AI 
 
-Este es mi proyecto final de gestion de conocimiento. La idea surgió de un problema real que tenemos todos: los PDFs de estudio son interminables y aburridísimos de repasar antes de un examen.
+Este proyecto consiste en el desarrollo de un software el cual permita a los estudiantes convertir material educativo en formato pdf en cuestionarios generados por la API de Gemini, permitiendo a los estudiantes una herramienta de estudio eficiente.
 
 ## ¿De qué trata?
 
@@ -45,4 +45,4 @@ EduTest_AI/
 
 ## Estado actual
 
-El login ya funciona. El siguiente paso es la subida de PDFs y la generación de cuestionarios con IA — la parte más interesante del proyecto.
+El login ya funciona. El siguiente paso es la subida de PDFs y la generación de cuestionarios con IA.

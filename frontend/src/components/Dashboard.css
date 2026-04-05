@@ -1,173 +1,89 @@
 /* ─────────────────────────────────────────────
-   Dashboard.css – Panel principal
-   EduTest AI
+   Dashboard.css – Solo lo que Tailwind no maneja:
+   fondo gradiente, orbe cian y upload-zone con estados.
+   EduTest AI – Dark Mode
 ───────────────────────────────────────────── */
 
-.dashboard-screen {
-  min-height: 100vh;
-  background-color: #f3f4f6;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+/* ── Fondo igual que Auth.jsx ───────────────────────────────── */
+.dash-bg {
+  background: radial-gradient(ellipse at 50% 40%, #0d1a2d 0%, #080c12 60%, #000000 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.dash-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Orbe cian — más tenue que en Auth para no distraer del contenido */
+.dash-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.04) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Upload zone dark ───────────────────────────────────────── */
+.upload-zone-dark {
   display: flex;
   flex-direction: column;
-}
-
-/* ── Header ─────────────────────────────────────────────────── */
-.dashboard-header {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background: linear-gradient(90deg, #0f0c29, #302b63);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-}
-
-.dashboard-logo {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-}
-
-.dashboard-logo span {
-  background: linear-gradient(90deg, #a78bfa, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.dashboard-user {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.dashboard-user span {
-  color: #cbd5e1;
-  font-size: 0.875rem;
-}
-
-.btn-logout {
-  padding: 0.4rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-logout:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* ── Main ────────────────────────────────────────────────────── */
-.dashboard-main {
-  flex: 1;
-  max-width: 1100px;
+  justify-content: center;
+  gap: 0.25rem;
   width: 100%;
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.1rem 1rem;
+  border: 2px dashed rgba(0, 229, 255, 0.25);
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.82rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
   box-sizing: border-box;
 }
 
-/* ── Bienvenida ──────────────────────────────────────────────── */
-.dashboard-welcome {
-  margin-bottom: 2.5rem;
+.upload-zone-dark:hover {
+  border-color: #00E5FF;
+  background: rgba(0, 229, 255, 0.05);
+  color: #00E5FF;
 }
 
-.dashboard-welcome h1 {
-  font-size: 1.9rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.5rem 0;
+.upload-zone-dark--active {
+  border-color: #00E5FF;
+  background: rgba(0, 229, 255, 0.08);
+  color: #00E5FF;
 }
 
-.dashboard-welcome p {
-  color: #6b7280;
-  font-size: 1rem;
-  margin: 0;
-  max-width: 520px;
-  line-height: 1.6;
-}
-
-/* ── Tarjetas de módulos ─────────────────────────────────────── */
-.dashboard-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.25rem;
-}
-
-.dash-card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 1.75rem 1.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.dash-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-.dash-card-icon {
-  font-size: 2rem;
-  margin-bottom: 0.25rem;
-}
-
-.dash-card h3 {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0;
-}
-
-.dash-card p {
-  font-size: 0.875rem;
-  color: #6b7280;
-  line-height: 1.55;
-  margin: 0 0 1rem 0;
-  flex: 1;
-}
-
-.btn {
-  padding: 0.6rem 1rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
-}
-
-.btn-primary {
-  background: linear-gradient(90deg, #7c3aed, #2563eb);
-  color: #ffffff;
-}
-
-.btn-primary:disabled {
-  opacity: 0.45;
+.upload-zone-dark--loading {
   cursor: not-allowed;
+  border-color: rgba(0, 229, 255, 0.4);
+  color: rgba(0, 229, 255, 0.5);
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .dashboard-header {
-    padding: 0.9rem 1.25rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
+/* ── Spinner ────────────────────────────────────────────────── */
+.upload-spinner-dark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 229, 255, 0.2);
+  border-top-color: #00E5FF;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-bottom: 0.2rem;
+}
 
-  .dashboard-main {
-    padding: 1.75rem 1.25rem;
-  }
-
-  .dashboard-welcome h1 {
-    font-size: 1.5rem;
-  }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

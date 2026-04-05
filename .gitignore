@@ -14,9 +14,11 @@ backend/venv/
 frontend/node_modules/
 node_modules/
 __pycache__/
+*.pyc
 
 # =========================
 # IGNORAR ARCHIVOS DEL SISTEMA
 # =========================
 .DS_Store
 Thumbs.db
+.vscode/
