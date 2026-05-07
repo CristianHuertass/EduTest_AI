@@ -1,5 +1,5 @@
 """
-Pydantic schemas for User domain.
+Esquemas Pydantic para el dominio User (Usuario).
 """
 from pydantic import BaseModel, EmailStr
 

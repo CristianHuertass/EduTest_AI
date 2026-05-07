@@ -1,5 +1,5 @@
 """
-v1 router – registers all domain-specific endpoints.
+Router v1 – registra todos los endpoints específicos por dominio.
 """
 from fastapi import APIRouter
 

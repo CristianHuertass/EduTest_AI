@@ -1,5 +1,5 @@
 """
-Pydantic schemas for Exam domain.
+Esquemas Pydantic para el dominio Exam (Examen).
 """
 from pydantic import BaseModel
 

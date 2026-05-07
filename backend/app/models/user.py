@@ -1,5 +1,5 @@
 """
-SQLAlchemy ORM model for User.
+Modelo ORM de SQLAlchemy para User (Usuario).
 """
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import DeclarativeBase

@@ -1,25 +1,25 @@
 """
-UserService – business logic for user operations.
+UserService – lógica de negocio para operaciones de usuario.
 """
 
 
 class UserService:
-    """Encapsulates business logic for user management."""
+    """Encapsula la lógica de negocio para la gestión de usuarios."""
 
     @staticmethod
     def get_all_users():
-        """Return all users from the database."""
-        # TODO: inject a DB session and query User model
+        """Retorna todos los usuarios desde la base de datos."""
+        # TODO: inyectar una sesión de BD y consultar el modelo User
         return []
 
     @staticmethod
     def get_user_by_id(user_id: int):
-        """Return a single user by primary key."""
-        # TODO: inject a DB session and query User model
+        """Retorna un único usuario por su clave primaria."""
+        # TODO: inyectar una sesión de BD y consultar el modelo User
         return None
 
     @staticmethod
     def create_user(email: str, password: str, full_name: str | None = None):
-        """Hash the password and persist a new user."""
-        # TODO: implement with DB session + security.get_password_hash
+        """Hashea la contraseña y persiste un nuevo usuario."""
+        # TODO: implementar con sesión de BD + security.get_password_hash
         return None

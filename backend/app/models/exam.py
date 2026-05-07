@@ -1,5 +1,5 @@
 """
-SQLAlchemy ORM model for Exam.
+Modelo ORM de SQLAlchemy para Exam (Examen).
 """
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship

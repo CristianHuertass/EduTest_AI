@@ -3,7 +3,7 @@ main.py – Punto de entrada de la API de EduTest AI.
 
 Inicializa la aplicación FastAPI, configura el middleware CORS,
 expone los endpoints existentes y añade el endpoint de generación
-de cuestionarios con IA (Historia de Usuario 04 – Tareas 1 y 2).
+de cuestionarios con IA (Historia de Usuario 04 - Tareas 1 y 2).
 """
 
 import io
@@ -12,7 +12,7 @@ import os
 import urllib.request
 
 from google import genai
-import PyPDF2
+import pypdf
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -66,6 +66,19 @@ class QuizRequest(BaseModel):
     """Cuerpo esperado en el endpoint POST /api/generate-quiz."""
 
     file_url: str  # URL pública del PDF que se usará para generar el quiz
+    material_id: str
+    title: str
+    quiz_type: str
+    user_id: str
+
+
+class QuizAttemptRequest(BaseModel):
+    """Cuerpo esperado en el endpoint POST /api/save-attempt."""
+    user_id: str
+    quiz_id: str
+    quiz_data: list[dict]
+    user_answers: dict
+
 
 
 # ---------------------------------------------------------------------------
@@ -76,7 +89,7 @@ class QuizRequest(BaseModel):
 @app.get("/", tags=["Health"])
 def root():
     """Endpoint raíz para confirmar que la API está en línea."""
-    return {"message": "EduTest AI API está en línea ✅"}
+    return {"message": "EduTest AI API está en línea "}
 
 
 @app.get("/api/test-db", tags=["Diagnostics"])
@@ -128,10 +141,10 @@ def generate_quiz(request: QuizRequest):
         )
 
     # ------------------------------------------------------------------
-    # Paso B – Extracción de texto con PyPDF2
+    # Paso B – Extracción de texto con pypdf
     # ------------------------------------------------------------------
     try:
-        reader = PyPDF2.PdfReader(pdf_bytes)
+        reader = pypdf.PdfReader(pdf_bytes)
         extracted_text = ""
         for page in reader.pages:
             extracted_text += page.extract_text() or ""
@@ -165,12 +178,14 @@ Reglas estrictas que DEBES cumplir:
 1. Cada pregunta debe tener exactamente 4 opciones de respuesta (A, B, C, D).
 2. Exactamente 1 opción debe ser la respuesta correcta.
 3. Las preguntas deben estar basadas únicamente en el texto proporcionado.
-4. Devuelve ÚNICAMENTE un JSON válido, sin texto adicional, sin explicaciones y sin formato markdown (sin bloques ```json```).
+4. Devuelve ÚNICAMENTE un array de objetos JSON válido. NO incluyas texto adicional, ni explicaciones, ni formato markdown (sin bloques ```json).
+5. PROHIBIDO usar comas al final de los objetos o listas (No trailing commas).
 
-La estructura del JSON debe ser un array de objetos con las siguientes llaves:
-- "question": string con el enunciado de la pregunta.
-- "options": object con las llaves "A", "B", "C" y "D", cada una con el texto de la opción.
-- "correct_answer": string con la letra de la respuesta correcta ("A", "B", "C" o "D").
+La estructura de CADA objeto dentro del array JSON debe tener EXACTAMENTE estas llaves en español:
+- "pregunta": string con el enunciado de la pregunta.
+- "opciones": object con las llaves "A", "B", "C" y "D", cada una con el texto de la opción.
+- "respuesta_correcta": string con la letra de la respuesta correcta ("A", "B", "C" o "D").
+- "justificacion": string con una breve explicación de por qué esa es la respuesta correcta.
 
 Texto académico:
 \"\"\"
@@ -178,7 +193,6 @@ Texto académico:
 \"\"\"
 
 Responde SOLO con el JSON, nada más."""
-
     try:
         ai_response = client.models.generate_content(
             model=GEMINI_MODEL,
@@ -214,5 +228,95 @@ Responde SOLO con el JSON, nada más."""
             ),
         )
 
+    # ------------------------------------------------------------------
+    # Paso E - Guardar el quiz en Supabase
+    # ------------------------------------------------------------------
+    from app.core.database import supabase
+    try:
+        db_response = supabase.table("quizzes").insert({
+            "material_id": request.material_id,
+            "user_id": request.user_id,
+            "title": request.title,
+            "quiz_type": request.quiz_type
+        }).execute()
+        
+        quiz_id = db_response.data[0]["id"] if db_response.data else None
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al guardar el quiz en la base de datos: {exc}",
+        )
+
     # Retorna la respuesta exitosa
-    return {"success": True, "data": quiz_data}
+    return {"success": True, "quiz_id": quiz_id, "data": quiz_data}
+
+
+from fastapi import Header
+
+@app.post("/api/save-attempt", tags=["Quiz"])
+def save_attempt(request: QuizAttemptRequest, authorization: str | None = Header(default=None)):
+    """Guarda la nota de un intento de cuestionario."""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Token no proporcionado o inválido")
+
+    from app.services.quiz_service import calculate_grade
+    from app.core.database import supabase
+    
+    try:
+        # Calcular la calificación en el backend por seguridad
+        score_data = calculate_grade(request.quiz_data, request.user_answers)
+        
+        db_response = supabase.table("quiz_attempts").insert({
+            "user_id": request.user_id,
+            "quiz_id": request.quiz_id,
+            "score": score_data["correct"],
+            "answers": score_data
+        }).execute()
+        return {"success": True, "data": db_response.data, "score_result": score_data}
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al guardar el intento: {exc}",
+        )
+
+
+@app.get("/api/quizzes/{user_id}", tags=["Quiz"])
+def get_user_quizzes(user_id: str):
+    """Devuelve la lista de cuestionarios de un usuario ordenados por el más reciente."""
+    from app.core.database import supabase
+    try:
+        response = (
+            supabase.table("quizzes")
+            .select("*")
+            .eq("user_id", user_id)
+            .order("created_at", desc=True)
+            .execute()
+        )
+        return {"success": True, "data": response.data}
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener los cuestionarios: {exc}",
+        )
+
+
+@app.get("/api/quiz_attempt/{quiz_id}", tags=["Quiz"])
+def get_quiz_attempt(quiz_id: str):
+    """Devuelve el intento más reciente de un cuestionario."""
+    from app.core.database import supabase
+    try:
+        response = (
+            supabase.table("quiz_attempts")
+            .select("*")
+            .eq("quiz_id", quiz_id)
+            .order("created_at", desc=True)
+            .limit(1)
+            .execute()
+        )
+        data = response.data[0] if response.data else None
+        return {"success": True, "data": data}
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener el intento: {exc}",
+        )

@@ -1,5 +1,5 @@
 """
-Application configuration loaded from environment variables / .env file.
+Configuración de la aplicación cargada desde variables de entorno / archivo .env.
 """
 from pydantic_settings import BaseSettings
 
@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     VERSION: str = "0.1.0"
     DEBUG: bool = True
 
-    # Security
+    # Seguridad
     SECRET_KEY: str = "change-me-in-production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # CORS
     ALLOWED_ORIGINS: list[str] = ["http://localhost:5173"]
 
-    # Database (placeholder – replace with your DB URL)
+    # Base de datos (provisional – reemplaza con tu URL de BD)
     DATABASE_URL: str = "sqlite:///./edutest.db"
 
     class Config:

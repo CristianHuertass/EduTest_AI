@@ -1,5 +1,5 @@
 """
-Auth endpoints – login and token refresh.
+Endpoints de autenticación – inicio de sesión y renovación de token.
 """
 from fastapi import APIRouter
 
@@ -8,6 +8,6 @@ router = APIRouter()
 
 @router.post("/login")
 def login():
-    """Authenticate a user and return a JWT access token."""
-    # TODO: implement authentication logic
+    """Autentica a un usuario y retorna un token de acceso JWT."""
+    # TODO: implementar la lógica de autenticación
     return {"access_token": "placeholder", "token_type": "bearer"}

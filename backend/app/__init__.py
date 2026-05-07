@@ -1,1 +1,1 @@
-"""EduTest AI backend package."""
+"""Paquete backend de EduTest AI."""

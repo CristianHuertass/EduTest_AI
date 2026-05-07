@@ -1,27 +1,27 @@
 """
-ExamService – business logic for AI-assisted exam generation.
+ExamService – lógica de negocio para la generación de exámenes asistida por IA.
 """
 
 
 class ExamService:
-    """Encapsulates business logic for exam creation and AI question generation."""
+    """Encapsula la lógica de negocio para la creación de exámenes y generación de preguntas con IA."""
 
     @staticmethod
     def list_exams():
-        """Return all exams from the database."""
-        # TODO: inject a DB session and query Exam model
+        """Retorna todos los exámenes desde la base de datos."""
+        # TODO: inyectar una sesión de BD y consultar el modelo Exam
         return []
 
     @staticmethod
     def get_exam(exam_id: int):
-        """Return a single exam by primary key."""
-        # TODO: inject a DB session and query Exam model
+        """Retorna un único examen por su clave primaria."""
+        # TODO: inyectar una sesión de BD y consultar el modelo Exam
         return None
 
     @staticmethod
     def create_exam(title: str, topic: str, num_questions: int = 10):
         """
-        Create a new exam and delegate question generation to an AI service.
+        Crea un nuevo examen y delega la generación de preguntas a un servicio de IA.
         """
-        # TODO: call an AI provider (e.g. Gemini) to generate questions
+        # TODO: llamar a un proveedor de IA (e.g. Gemini) para generar las preguntas
         return None

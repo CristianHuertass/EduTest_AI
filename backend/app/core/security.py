@@ -1,5 +1,5 @@
 """
-JWT token creation and password hashing utilities.
+Utilidades para creación de tokens JWT y hashing de contraseñas.
 """
 from datetime import datetime, timedelta, timezone
 
@@ -12,7 +12,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 # ---------------------------------------------------------------------------
-# Password helpers
+# Helpers de contraseña
 # ---------------------------------------------------------------------------
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -24,7 +24,7 @@ def get_password_hash(password: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# JWT helpers
+# Helpers de JWT
 # ---------------------------------------------------------------------------
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
